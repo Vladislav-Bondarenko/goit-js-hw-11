@@ -28,7 +28,11 @@ form.addEventListener('submit', async event => {
   showLoader();
 
   try {
-    const images = await fetchImages(query);
+    const [images] = await Promise.all([
+      fetchImages(query),
+      new Promise(resolve => setTimeout(resolve, 500))
+    ]);
+
     if (images.length === 0) {
       showErrorNotification();
       input.classList.add('error');
@@ -53,6 +57,8 @@ function showErrorNotification() {
     backgroundColor: '#ff4444',
     theme: 'dark',
     progressBarColor: '#ff6666',
-    timeout: 5000
+    timeout: 5000,
+    displayMode: 2,
+    layout: 2
   });
 }
